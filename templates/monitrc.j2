@@ -11,6 +11,23 @@ set pidfile /var/run/monit.pid
 set idfile {{ monit_id_file }}
 set statefile {{ monit_state_file }}
 
+{% if monit_enable_alert %}
+{%  for item in monit_alert_rcpt %}
+set alert {{ item }}
+{%  endfor %}
+set mailserver {{ monit_mailserver | join(", ") }}
+    port {{ monit_mailserver_port }}
+{%  if monit_mailserver_user and monit_mailserver_pass %}
+    username {{ monit_mailserver_user }} password "{{ monit_mailserver_pass }}"
+{%  endif %}
+
+set mail-format {
+    from:    {{ monit_alert_sender }}
+    subject: {{ monit_mail_subject }}
+    message: {{ monit_mail_message | indent(14) }}
+}
+{% endif %}
+
 set httpd port {{ monit_http_port }}
     use address {{ monit_http_listen_addr }}
 {% for item in monit_http_allow_access %}
