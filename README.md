@@ -1,6 +1,8 @@
 Ansible Role Monit
 =========
 
+[![Build Status](https://travis-ci.com/cloudweeb/cloudweeb.monit.svg?branch=master)](https://travis-ci.com/cloudweeb/cloudweeb.monit)
+
 Ansible rolt to install Monit service
 
 Requirements

@@ -1,6 +1,10 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    monit_start_delay: ""
+    monit_enable_alert: true
+
   roles:
     - role: geerlingguy.repo-epel
       when: ansible_distribution == 'RedHat'
