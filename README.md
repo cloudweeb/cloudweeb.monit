@@ -1,48 +1,57 @@
-Role Name
+Ansible Role Monit
 =========
 
-A brief description of the role goes here.
+Ansible rolt to install Monit service
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+| Variable                | Default                      |  Comment                                         |
+|-------------------------|------------------------------|--------------------------------------------------|
+| monit_check_interval    | 120                          | Monit's poll cycle length                        |
+| monit_start_delay       | 240                          | Time delay before Monit starts checking services |
+| monit_http_port         | 2812                         | Monit http default port                          |
+| monit_http_listen_addr  | localhost                    | Monit http listen address                        |
+| monit_http_allow_access | ["localhost"]                | Monit http allow access                          |
+| monit_enable_alert      | false                        | enable Monit alert if true                       |
+| monit_alert_rcpt        | ['admin@{{ ansible_fqdn }}'] | Monit alert recipients                           |
+| monit_alert_sender      | "admin@{{ ansible_fqdn }}"   | Monit alert sender                               |
+| monit_mailserver        | ["localhost"]                | Monit SMTP host                                  |
+| monit_mailserver_port   | 25                           | Monit SMTP port                                  |
+| monit_mailserver_user   |                              | Monit SMTP user                                  |
+| monit_mailserver_pass   |                              | Monit SMTP pass                                  |
+| monit_mail_subject      | monit alert --  $EVENT       | Monit alert subject                              |
+| monit_mail_message:     | defaults/main.yml#L20        |Monit alert message                               |
+| monit_service_checks    | defaults/main.yml#L13        | Services that must be checked by monit           |
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+* geerlingguy.repo-epel
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
     - hosts: servers
+      vars:
+        monit_start_delay: ""
+
       roles:
-         - { role: cloudweeb.monit, x: 42 }
+        - role: geerlingguy.repo-epel
+          when: ansible_distribution == 'RedHat'
+        - role: cloudweeb.monit
 
 License
 -------
 
-BSD
+BSD / MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+Agnesius Santo Naibaho
