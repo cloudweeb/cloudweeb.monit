@@ -1,0 +1,20 @@
+---
+
+monit_check_interval: 120
+monit_start_delay: 240
+monit_http_port: 2812
+
+monit_http_listen_addr: localhost
+
+monit_http_allow_access: ["localhost"]
+
+monit_enable_alert: true
+
+monit_service_checks:
+  - name: check-system
+    checker: |
+      check system $HOST
+        if loadavg (1min) > {{ ansible_processor_vcpus * 2 }} then alert
+        if loadavg (5min) > {{ ansible_processor_vcpus }} then alert
+        if cpu usage > 95% for 5 cycles then alert
+        if memory usage > 75% then alert

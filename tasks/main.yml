@@ -1,0 +1,35 @@
+---
+
+- name: Include OS-specific variables.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: Install Monit package
+  package:
+    name: monit
+    state: present
+
+- name: Setup Monit main config
+  template:
+    src: monitrc.j2
+    dest: "{{ monit_main_conf }}"
+    mode: 0600
+    validate: monit -t -c %s
+  notify: reload monit
+
+- name: Setup Monit service check
+  template:
+    src: services.j2
+    dest: "{{ monit_conf_dir }}/{{ item.name }}"
+    mode: 0600
+    validate: monit -t -c %s
+  loop: "{{ monit_service_checks }}"
+  notify: reload monit
+
+- name: Start & enable Monit
+  service:
+    name: monit
+    state: started
+    enabled: true

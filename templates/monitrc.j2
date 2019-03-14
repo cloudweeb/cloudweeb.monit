@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+
+set daemon {{ monit_check_interval }}
+{% if monit_start_delay is defined and monit_start_delay %}
+    with start delay {{ monit_start_delay }}
+{% endif %}
+
+set logfile /var/log/monit.log
+set pidfile /var/run/monit.pid
+
+set idfile {{ monit_id_file }}
+set statefile {{ monit_state_file }}
+
+set httpd port {{ monit_http_port }}
+    use address {{ monit_http_listen_addr }}
+{% for item in monit_http_allow_access %}
+    allow {{ item }}
+{% endfor %}
+    allow admin:monit
+
+include {{ monit_conf_dir }}/*

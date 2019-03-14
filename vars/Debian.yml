@@ -1,0 +1,6 @@
+---
+
+monit_main_conf: /etc/monit/monitrc
+monit_conf_dir: /etc/monit/conf.d
+monit_id_file: /var/lib/monit/id
+monit_state_file: /var/lib/monit/state

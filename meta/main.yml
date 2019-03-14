@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  role_name: monit
+  author: Agnesius Santo Naibaho
+  description: Install monit
+  company: Cloudweeb
+
+  license: MIT
+
+  min_ansible_version: 2.7
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Debian
+      versions:
+        - stretch
+
+  galaxy_tags:
+    - monitoring
+
+dependencies:
+  - role: geerlingguy.repo-epel
+    when: ansible_distribution == 'RedHat'
